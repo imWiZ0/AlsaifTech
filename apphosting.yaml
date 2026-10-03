@@ -1,0 +1,9 @@
+# Firebase App Hosting configuration for AlsaifTech
+# Next.js is detected automatically and built with `npm run build`.
+
+runConfig:
+  minInstances: 0
+  maxInstances: 2
+  concurrency: 80
+  cpu: 1
+  memoryMiB: 512
