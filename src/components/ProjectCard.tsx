@@ -1,5 +1,7 @@
 "use client";
 
+import { useLocale, useTranslations } from "next-intl";
+
 import {
   AvatarGroup,
   Carousel,
@@ -30,6 +32,10 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   avatars,
   link,
 }) => {
+  const locale = useLocale();
+  const t = useTranslations("Common");
+  const localizedHref = `/${locale}${href}`;
+
   return (
     <Column fillWidth gap="m">
       <Carousel
@@ -67,9 +73,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 <SmartLink
                   suffixIcon="arrowRight"
                   style={{ margin: "0", width: "fit-content" }}
-                  href={href}
+                  href={localizedHref}
                 >
-                  <Text variant="body-default-s">Read case study</Text>
+                  <Text variant="body-default-s">{t("readCaseStudy")}</Text>
                 </SmartLink>
               )}
               {link && (
@@ -78,7 +84,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                   style={{ margin: "0", width: "fit-content" }}
                   href={link}
                 >
-                  <Text variant="body-default-s">View project</Text>
+                  <Text variant="body-default-s">{t("viewProject")}</Text>
                 </SmartLink>
               )}
             </Flex>

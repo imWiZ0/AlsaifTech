@@ -20,25 +20,28 @@ import { formatDate } from "@/utils/formatDate";
 import { ScrollToHash, CustomMDX } from "@/components";
 import { Metadata } from "next";
 import { Projects } from "@/components/work/Projects";
+import { getLocale, getTranslations } from "next-intl/server";
+import { routing } from "@/i18n/routing";
 
-export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  const posts = getPosts(["src", "app", "work", "projects"]);
-  return posts.map((post) => ({
+export async function generateStaticParams(): Promise<{ locale: string; slug: string }[]> {
+  const posts = getPosts(["src", "app", "[locale]", "work", "projects"]);
+  return routing.locales.flatMap((locale) => posts.map((post) => ({
+    locale,
     slug: post.slug,
-  }));
+  })));
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string | string[] }>;
+  params: Promise<{ locale: string; slug: string | string[] }>;
 }): Promise<Metadata> {
   const routeParams = await params;
   const slugPath = Array.isArray(routeParams.slug)
     ? routeParams.slug.join("/")
     : routeParams.slug || "";
 
-  const posts = getPosts(["src", "app", "work", "projects"]);
+  const posts = getPosts(["src", "app", "[locale]", "work", "projects"]);
   let post = posts.find((post) => post.slug === slugPath);
 
   if (!post) return {};
@@ -55,8 +58,10 @@ export async function generateMetadata({
 export default async function Project({
   params,
 }: {
-  params: Promise<{ slug: string | string[] }>;
+  params: Promise<{ locale: string; slug: string | string[] }>;
 }) {
+  const t = await getTranslations("Common");
+  const locale = await getLocale();
   const routeParams = await params;
   const slugPath = Array.isArray(routeParams.slug)
     ? routeParams.slug.join("/")
@@ -93,8 +98,8 @@ export default async function Project({
         }}
       />
       <Column maxWidth="s" gap="16" horizontal="center" align="center">
-        <SmartLink href="/work">
-          <Text variant="label-strong-m">Projects</Text>
+        <SmartLink href={`/${locale}/work`}>
+          <Text variant="label-strong-m">{t("projects")}</Text>
         </SmartLink>
         <Text variant="body-default-xs" onBackground="neutral-weak" marginBottom="12">
           {post.metadata.publishedAt && formatDate(post.metadata.publishedAt)}
@@ -127,7 +132,7 @@ export default async function Project({
       <Column fillWidth gap="40" horizontal="center" marginTop="40">
         <Line maxWidth="40" />
         <Heading as="h2" variant="heading-strong-xl" marginBottom="24">
-          Related projects
+          {t("relatedProjects")}
         </Heading>
         <Projects exclude={[post.slug]} range={[2]} />
       </Column>

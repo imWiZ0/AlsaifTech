@@ -13,6 +13,7 @@ import {
 } from "@once-ui-system/core";
 import { home, about, person, baseURL, routes } from "@/resources";
 import { Mailchimp } from "@/components";
+import { getLocale, getTranslations } from "next-intl/server";
 import { Projects } from "@/components/work/Projects";
 import { Posts } from "@/components/blog/Posts";
 
@@ -26,7 +27,9 @@ export async function generateMetadata() {
   });
 }
 
-export default function Home() {
+export default async function Home() {
+  const t = await getTranslations("Common");
+  const locale = await getLocale();
   return (
     <Column maxWidth="m" gap="xl" paddingY="12" horizontal="center">
       <Schema
@@ -59,7 +62,7 @@ export default function Home() {
                 onBackground="neutral-strong"
                 textVariant="label-default-s"
                 arrow={false}
-                href={home.featured.href}
+                href={`/${locale}${home.featured.href}`}
               >
                 <Row paddingY="2">{home.featured.title}</Row>
               </Badge>
@@ -79,7 +82,7 @@ export default function Home() {
             <Button
               id="about"
               data-border="rounded"
-              href={about.path}
+              href={`/${locale}${about.path}`}
               variant="secondary"
               size="m"
               weight="default"
@@ -111,7 +114,7 @@ export default function Home() {
           <Row fillWidth gap="24" marginTop="40" s={{ direction: "column" }}>
             <Row flex={1} paddingLeft="l" paddingTop="24">
               <Heading as="h2" variant="display-strong-xs" wrap="balance">
-                Latest from the blog
+                {t("latestFromBlog")}
               </Heading>
             </Row>
             <Row flex={3} paddingX="20">

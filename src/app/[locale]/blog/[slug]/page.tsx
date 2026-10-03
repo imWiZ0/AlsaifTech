@@ -20,26 +20,29 @@ import { getPosts } from "@/utils/utils";
 import { Metadata } from "next";
 import React from "react";
 import { Posts } from "@/components/blog/Posts";
+import { getLocale, getTranslations } from "next-intl/server";
+import { routing } from "@/i18n/routing";
 import { ShareSection } from "@/components/blog/ShareSection";
 
-export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  const posts = getPosts(["src", "app", "blog", "posts"]);
-  return posts.map((post) => ({
+export async function generateStaticParams(): Promise<{ locale: string; slug: string }[]> {
+  const posts = getPosts(["src", "app", "[locale]", "blog", "posts"]);
+  return routing.locales.flatMap((locale) => posts.map((post) => ({
+    locale,
     slug: post.slug,
-  }));
+  })));
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string | string[] }>;
+  params: Promise<{ locale: string; slug: string | string[] }>;
 }): Promise<Metadata> {
   const routeParams = await params;
   const slugPath = Array.isArray(routeParams.slug)
     ? routeParams.slug.join("/")
     : routeParams.slug || "";
 
-  const posts = getPosts(["src", "app", "blog", "posts"]);
+  const posts = getPosts(["src", "app", "[locale]", "blog", "posts"]);
   let post = posts.find((post) => post.slug === slugPath);
 
   if (!post) return {};
@@ -53,7 +56,9 @@ export async function generateMetadata({
   });
 }
 
-export default async function Blog({ params }: { params: Promise<{ slug: string | string[] }> }) {
+export default async function Blog({ params }: { params: Promise<{ locale: string; slug: string | string[] }> }) {
+  const t = await getTranslations("Common");
+  const locale = await getLocale();
   const routeParams = await params;
   const slugPath = Array.isArray(routeParams.slug)
     ? routeParams.slug.join("/")
@@ -94,8 +99,8 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
             }}
           />
           <Column maxWidth="s" gap="16" horizontal="center" align="center">
-            <SmartLink href="/blog">
-              <Text variant="label-strong-m">Blog</Text>
+            <SmartLink href={`/${locale}/blog`}>
+              <Text variant="label-strong-m">{t("blog")}</Text>
             </SmartLink>
             <Text variant="body-default-xs" onBackground="neutral-weak" marginBottom="12">
               {post.metadata.publishedAt && formatDate(post.metadata.publishedAt)}
@@ -145,7 +150,7 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
           <Column fillWidth gap="40" horizontal="center" marginTop="40">
             <Line maxWidth="40" />
             <Text as="h2" id="recent-posts" variant="heading-strong-xl" marginBottom="24">
-              Recent posts
+              {t("recentPosts")}
             </Text>
             <Posts exclude={[post.slug]} range={[1, 2]} columns="2" thumbnail direction="column" />
           </Column>

@@ -3,6 +3,7 @@
 import { Card, Column, Media, Row, Avatar, Text } from "@once-ui-system/core";
 import { formatDate } from "@/utils/formatDate";
 import { person } from "@/resources";
+import { useLocale, useTranslations } from "next-intl";
 
 interface PostProps {
   post: any;
@@ -11,11 +12,13 @@ interface PostProps {
 }
 
 export default function Post({ post, thumbnail, direction }: PostProps) {
+  const locale = useLocale();
+  const t = useTranslations("Common");
   return (
     <Card
       fillWidth
       key={post.slug}
-      href={`/blog/${post.slug}`}
+      href={`/${locale}/blog/${post.slug}`}
       transition="micro-medium"
       direction={direction}
       border="transparent"
@@ -33,7 +36,7 @@ export default function Post({ post, thumbnail, direction }: PostProps) {
           cursor="interactive"
           radius="l"
           src={post.metadata.image}
-          alt={"Thumbnail of " + post.metadata.title}
+          alt={t("thumbnailOf", { title: post.metadata.title })}
           aspectRatio="16 / 9"
         />
       )}

@@ -37,24 +37,24 @@ const protectedRoutes: ProtectedRoutesConfig = {
 };
 
 // Import and set font for each variant
-import { Geist } from "next/font/google";
+import { Cairo } from "next/font/google";
 import { Geist_Mono } from "next/font/google";
 
-const heading = Geist({
+const heading = Cairo({
   variable: "--font-heading",
-  subsets: ["latin"],
+  subsets: ["arabic", "latin"],
   display: "swap",
 });
 
-const body = Geist({
+const body = Cairo({
   variable: "--font-body",
-  subsets: ["latin"],
+  subsets: ["arabic", "latin"],
   display: "swap",
 });
 
-const label = Geist({
+const label = Cairo({
   variable: "--font-label",
-  subsets: ["latin"],
+  subsets: ["arabic", "latin"],
   display: "swap",
 });
 

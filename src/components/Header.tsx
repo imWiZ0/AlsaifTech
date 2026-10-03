@@ -1,7 +1,8 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { usePathname, useRouter } from "@/i18n/navigation";
 
 import { Fade, Flex, Line, Row, ToggleButton } from "@once-ui-system/core";
 
@@ -43,7 +44,12 @@ const TimeDisplay: React.FC<TimeDisplayProps> = ({ timeZone, locale = "en-GB" })
 export default TimeDisplay;
 
 export const Header = () => {
-  const pathname = usePathname() ?? "";
+  const pathname = usePathname() ?? "/";
+  const router = useRouter();
+  const locale = useLocale();
+  const t = useTranslations("Navigation");
+  const tc = useTranslations("Common");
+  const nextLocale = locale === "ar" ? "en" : "ar";
 
   return (
     <>
@@ -96,7 +102,7 @@ export const Header = () => {
                     <ToggleButton
                       prefixIcon="person"
                       href="/about"
-                      label={about.label}
+                      label={t("about")}
                       selected={pathname === "/about"}
                     />
                   </Row>
@@ -115,7 +121,7 @@ export const Header = () => {
                     <ToggleButton
                       prefixIcon="grid"
                       href="/work"
-                      label={work.label}
+                      label={t("work")}
                       selected={pathname.startsWith("/work")}
                     />
                   </Row>
@@ -134,7 +140,7 @@ export const Header = () => {
                     <ToggleButton
                       prefixIcon="book"
                       href="/blog"
-                      label={blog.label}
+                      label={t("blog")}
                       selected={pathname.startsWith("/blog")}
                     />
                   </Row>
@@ -153,7 +159,7 @@ export const Header = () => {
                     <ToggleButton
                       prefixIcon="gallery"
                       href="/gallery"
-                      label={gallery.label}
+                      label={t("gallery")}
                       selected={pathname.startsWith("/gallery")}
                     />
                   </Row>
@@ -169,7 +175,13 @@ export const Header = () => {
               {display.themeSwitcher && (
                 <>
                   <Line background="neutral-alpha-medium" vert maxHeight="24" />
-                  <ThemeToggle />
+                  <ToggleButton
+                  prefixIcon="globe"
+                  aria-label={tc("switchLanguage")}
+                  onClick={() => router.replace(pathname, { locale: nextLocale })}
+                  label={locale === "ar" ? "EN" : "AR"}
+                />
+                <ThemeToggle />
                 </>
               )}
             </Row>

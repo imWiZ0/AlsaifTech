@@ -2,7 +2,7 @@
   "name": "@once-ui-system/magic-portfolio",
   "version": "2.3.0",
   "engines": {
-    "node": ">=22 <23"
+    "node": ">=22"
   },
   "scripts": {
     "dev": "next dev",
@@ -18,9 +18,11 @@
     "@once-ui-system/core": "latest",
     "classnames": "^2.5.1",
     "cookie": "^1.0.2",
+    "firebase": "^12.19.0",
     "gray-matter": "^4.0.3",
     "lint-staged": "^16.1.5",
     "next": "^16.0.10",
+    "next-intl": "^4.14.9",
     "next-mdx-remote": "^6.0.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.3",

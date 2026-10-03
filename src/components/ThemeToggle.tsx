@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Row, ToggleButton, useTheme } from "@once-ui-system/core";
 
 export const ThemeToggle: React.FC = () => {
   const { theme, setTheme } = useTheme();
+  const t = useTranslations("Common");
   const [mounted, setMounted] = useState(false);
   const [currentTheme, setCurrentTheme] = useState("light");
 
@@ -24,7 +26,7 @@ export const ThemeToggle: React.FC = () => {
     <ToggleButton
       prefixIcon={icon}
       onClick={() => setTheme(nextTheme)}
-      aria-label={`Switch to ${nextTheme} mode`}
+      aria-label={t("switchToMode", { mode: nextTheme })}
     />
   );
 };

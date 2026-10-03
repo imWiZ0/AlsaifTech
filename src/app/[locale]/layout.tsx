@@ -3,6 +3,9 @@ import "@once-ui-system/core/css/tokens.css";
 import "@/resources/custom.css";
 
 import classNames from "classnames";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { routing } from "@/i18n/routing";
 
 import {
   Background,
@@ -16,6 +19,12 @@ import {
 import { Footer, Header, RouteGuard, Providers } from "@/components";
 import { baseURL, effects, fonts, style, dataStyle, home, person } from "@/resources";
 
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
 export async function generateMetadata() {
   return Meta.generate({
     title: home.title,
@@ -28,14 +37,20 @@ export async function generateMetadata() {
 
 export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }>) {
+  const { locale } = await params;
+  const messages = await getMessages();
+  const validLocale = routing.locales.includes(locale as "en" | "ar") ? locale : routing.defaultLocale;
+
   return (
     <Flex
       suppressHydrationWarning
       as="html"
-      lang={person.locale ?? "en"}
+      lang={validLocale} dir={validLocale === "ar" ? "rtl" : "ltr"}
       fillWidth
       className={classNames(
         fonts.heading.variable,
@@ -103,8 +118,9 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <Providers>
-        <Column
+      <NextIntlClientProvider messages={messages}>
+        <Providers>
+          <Column
           as="body"
           background="page"
           fillWidth
@@ -162,9 +178,10 @@ export default async function RootLayout({
               <RouteGuard>{children}</RouteGuard>
             </Flex>
           </Flex>
-          <Footer />
-        </Column>
-      </Providers>
+            <Footer />
+          </Column>
+        </Providers>
+      </NextIntlClientProvider>
     </Flex>
   );
 }

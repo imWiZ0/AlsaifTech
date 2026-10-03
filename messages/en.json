@@ -1,0 +1,5 @@
+{
+  "Navigation":{"home":"Home","about":"About","work":"Work","blog":"Blog","gallery":"Gallery"},
+  "Common":{"latestFromBlog":"Latest from the blog","earlierPosts":"Earlier posts","recentPosts":"Recent posts","relatedProjects":"Related projects","projects":"Projects","switchLanguage":"Switch language","language":"Language","subscribe":"Subscribe","email":"Email","validEmail":"Please enter a valid email address.","scheduleCall":"Schedule a call","buildPortfolio":"Build your portfolio with","thumbnailOf":"Thumbnail of {title}","readCaseStudy":"Read case study","viewProject":"View project","switchToMode":"Switch to {mode} mode","english":"English","arabic":"Arabic"},
+  "Locale":{"en":"EN","ar":"AR"}
+}

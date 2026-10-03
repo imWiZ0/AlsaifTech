@@ -1,0 +1,5 @@
+{
+  "Navigation":{"home":"الرئيسية","about":"نبذة عني","work":"الأعمال","blog":"المدونة","gallery":"المعرض"},
+  "Common":{"latestFromBlog":"أحدث ما في المدونة","earlierPosts":"مقالات سابقة","recentPosts":"أحدث المقالات","relatedProjects":"مشاريع ذات صلة","projects":"المشاريع","switchLanguage":"تغيير اللغة","language":"اللغة","subscribe":"اشترك","email":"البريد الإلكتروني","validEmail":"يرجى إدخال بريد إلكتروني صحيح.","scheduleCall":"احجز مكالمة","buildPortfolio":"أنشئ معرض أعمالك باستخدام","thumbnailOf":"صورة مصغرة لـ {title}","readCaseStudy":"اقرأ دراسة الحالة","viewProject":"عرض المشروع","switchToMode":"التبديل إلى الوضع {mode}","english":"الإنجليزية","arabic":"العربية"},
+  "Locale":{"en":"EN","ar":"AR"}
+}
